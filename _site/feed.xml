@@ -5,25 +5,76 @@
     <description>welcome</description>
     <link>http://shangqianForFun/</link>
     <atom:link href="http://shangqianForFun/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 01 Apr 2017 18:19:13 +0800</pubDate>
-    <lastBuildDate>Sat, 01 Apr 2017 18:19:13 +0800</lastBuildDate>
+    <pubDate>Wed, 05 Apr 2017 18:54:33 +0800</pubDate>
+    <lastBuildDate>Wed, 05 Apr 2017 18:54:33 +0800</lastBuildDate>
     <generator>Jekyll v3.1.1</generator>
     
       <item>
-        <title>iOS动态更新</title>
-        <description>&lt;h1 id=&quot;ios-app-&quot;&gt;iOS app 运行状态&lt;/h1&gt;
-&lt;p&gt;| State            | Description            | 
-| ————- |:————-:| 
-| 非运行状态      | app 没有启动，或者正在运行，但是被系统杀死 | 
-| 闲置状态      | app在前台运行，但是当前没有接收事件(可能在执行一些代码)这是一个短暂的中转状态      | 
-| 运行状态    | app在前台运行，并且在接收事件，这是一个前台app的普通状态      |
-| 后台状态	 |	app在后台运行并且在执行一些代码。大多数app在被挂起之前，只会在这个状态短暂的停留，然而，一个app可以请求额外的运行时间，以保持这个状态更长的时间。|
-|挂起状态 | app在后台不执行代码。系统会将app自动设置为这个状态，并且设置之前不会告知app。当app挂起的时候，app留在内存里但是不执行任何代码。当系统遇到一个低内存的情况，系统会悄悄的清除挂起的app，为前台的app获取更多的空间&lt;/p&gt;
+        <title>iOS运行状态&amp;后台执行</title>
+        <description>&lt;h3 id=&quot;section&quot;&gt;非运行状态&lt;/h3&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;app 没有启动，或者正在运行，但是被系统杀死。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;section-1&quot;&gt;闲置状态&lt;/h3&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;app在前台运行，但是当前没有接收事件(可能在执行一些代码)这是一个短暂的中转状态。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;section-2&quot;&gt;运行状态&lt;/h3&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;app在前台运行，并且在接收事件，这是一个前台app的普通状态。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;section-3&quot;&gt;后台状态&lt;/h3&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;app在后台运行并且在执行一些代码。大多数app在被挂起之前，只会在这个状态短暂的停留，然而，一个app可以请求额外的运行时间，以保持这个状态更长的时间。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;section-4&quot;&gt;挂起状态&lt;/h3&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;app在后台不执行代码。系统会将app自动设置为这个状态，并且设置之前不会告知app。当app挂起的时候，app留在内存里但是不执行任何代码。当系统遇到一个低内存的情况，系统会悄悄的清除挂起的app，为前台的app获取更多的空间。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://i2.muimg.com/567571/bdd2059b085d158b.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;app&quot;&gt;app后台运行&lt;/h1&gt;
+&lt;p&gt;大多数app可以被系统挂起，但是有一些app需要在后台继续运行，例如音乐类的（需要在后台播放），运动类的需要实时监测运动轨迹等，还有一些需要在后台下载一些东西。iOS系统为需要后台运行的app提供了三种技术：
+* 你的app在前台开启了一个短期任务，在进入后台的时候可以向系统申请时间去完成这个任务
+* app在前台开启了一个下载任务，可以将这些下载的任务交给系统。由此，app可以在挂起或者进入后台的时候继续下载任务
+* app需要在后台执行某些特定的任务，需要声明一个或者多个的后台执行模式
+## 执行有限时长的任务
+* app在退到后台的时候，会进入到一个休眠状态，系统会很快将app挂起。如果你的app需要一些额外时间去完成任务你可以用UIApplication对象的 &lt;code class=&quot;highlighter-rouge&quot;&gt;beginBackgroundTaskWithName:expirationHandler: or beginBackgroundTaskWithExpirationHandler:&lt;/code&gt; 调用这个方法会暂时延迟app被挂起的时间，在任务完成的时候你需要调用&lt;code class=&quot;highlighter-rouge&quot;&gt;endBackgroundTask: &lt;/code&gt; 去告诉系统完成了任务，并且系统可以将其挂起。调用 &lt;code class=&quot;highlighter-rouge&quot;&gt;beginBackgroundTaskWithName:expirationHandler: or beginBackgroundTaskWithExpirationHandler: &lt;/code&gt;会生成一个对应的任务的token。当完成一个对应任务的时候必须调用&lt;code class=&quot;highlighter-rouge&quot;&gt;endBackgroundTask:&lt;/code&gt;传入对应的token，让系统知道，任务已经完成。如果没有调用此方法就会导致app crash。如果你提供了一个任务过期的handler，在任务完成的时候系统会调用这个handler去终结这个任务去避免app crash。
+ &lt;code class=&quot;highlighter-rouge&quot;&gt;beginBackgroundTaskWithName:expirationHandler: or beginBackgroundTaskWithExpirationHandler:&lt;/code&gt; 在前台的时候也可以调用，只要你再任务完成时调用&lt;code class=&quot;highlighter-rouge&quot;&gt;endBackgroundTask:&lt;/code&gt;即可&lt;/p&gt;
+
+&lt;p&gt;```
+- (void)applicationDidEnterBackground:(UIApplication *)application
+{
+    bgTask = [application beginBackgroundTaskWithName:@”MyTask” expirationHandler:^{
+        // Clean up any unfinished task business by marking where you
+        // stopped or ending the task outright.
+        [application endBackgroundTask:bgTask];
+        bgTask = UIBackgroundTaskInvalid;
+    }];&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;// Start the long-running task and return immediately.
+dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+    // Do the work associated with the task, preferably in chunks.
+ 
+    [application endBackgroundTask:bgTask];
+    bgTask = UIBackgroundTaskInvalid;
+}); }
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;```&lt;/p&gt;
+
+&lt;p&gt;在这个方法中bgTask就是要执行的延时任务，expirationHandler就是一个任务过期的回调，以防任务时间过长，或者是调用endBackgroundTask失败。这个任务交给了GCD全局异步队列。&lt;/p&gt;
 
 </description>
-        <pubDate>Sat, 09 Jan 2016 19:15:06 +0800</pubDate>
-        <link>http://shangqianForFun/2016/01/iOS-app-%E8%BF%90%E8%A1%8C%E7%8A%B6%E6%80%81/</link>
-        <guid isPermaLink="true">http://shangqianForFun/2016/01/iOS-app-%E8%BF%90%E8%A1%8C%E7%8A%B6%E6%80%81/</guid>
+        <pubDate>Sat, 01 Apr 2017 00:00:00 +0800</pubDate>
+        <link>http://shangqianForFun/2017/04/iOS-app-%E8%BF%90%E8%A1%8C%E7%8A%B6%E6%80%81/</link>
+        <guid isPermaLink="true">http://shangqianForFun/2017/04/iOS-app-%E8%BF%90%E8%A1%8C%E7%8A%B6%E6%80%81/</guid>
         
         <category>iOS</category>
         

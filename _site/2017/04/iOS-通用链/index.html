@@ -7,16 +7,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   <title>iOS通用链</title>
-  <meta name="description" content="问题######产品提出需求，说要做类似电商类app在微信分享页中或者qq中跳转我们自己的app的功能，一般情况下来说直接想到的就是配置url schema，然后让前端同学进行跳转，然后在分别在这三个方法中进行处理（但是现在都是只用后两个了）* 3个回调的功能基本一样，都是在别人通过URL Schemes打开应用...">
+  <meta name="description" content="问题###### 产品提出需求，说要做类似电商类app在微信分享页中或者qq中跳转我们自己的app的功能，一般情况下来说直接想到的就是配置url schema，然后让前端同学进行跳转，然后在分别在这三个方法中进行处理（但是现在都是只用后两个了）* 3个回调的功能基本一样，都是在别人通过URL Schemes打开应...">
   <meta name="author" content="leopardpan">
 
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="iOS通用链">
-  <meta name="twitter:description" content="问题######产品提出需求，说要做类似电商类app在微信分享页中或者qq中跳转我们自己的app的功能，一般情况下来说直接想到的就是配置url schema，然后让前端同学进行跳转，然后在分别在这三个方法中进行处理（但是现在都是只用后两个了）* 3个回调的功能基本一样，都是在别人通过URL Schemes打开应用...">
+  <meta name="twitter:description" content="问题###### 产品提出需求，说要做类似电商类app在微信分享页中或者qq中跳转我们自己的app的功能，一般情况下来说直接想到的就是配置url schema，然后让前端同学进行跳转，然后在分别在这三个方法中进行处理（但是现在都是只用后两个了）* 3个回调的功能基本一样，都是在别人通过URL Schemes打开应...">
   
   <meta property="og:type" content="article">
   <meta property="og:title" content="iOS通用链">
-  <meta property="og:description" content="问题######产品提出需求，说要做类似电商类app在微信分享页中或者qq中跳转我们自己的app的功能，一般情况下来说直接想到的就是配置url schema，然后让前端同学进行跳转，然后在分别在这三个方法中进行处理（但是现在都是只用后两个了）* 3个回调的功能基本一样，都是在别人通过URL Schemes打开应用...">
+  <meta property="og:description" content="问题###### 产品提出需求，说要做类似电商类app在微信分享页中或者qq中跳转我们自己的app的功能，一般情况下来说直接想到的就是配置url schema，然后让前端同学进行跳转，然后在分别在这三个方法中进行处理（但是现在都是只用后两个了）* 3个回调的功能基本一样，都是在别人通过URL Schemes打开应...">
   
   <link rel="icon" type="image/png" href="/images/favicon.png" />
   <link href="/images/favicon.png" rel="shortcut icon" type="image/png">
@@ -151,7 +151,7 @@
 
   <section class="post">
     <h1 id="section">问题</h1>
-<p>######产品提出需求，说要做类似电商类app在微信分享页中或者qq中跳转我们自己的app的功能，一般情况下来说直接想到的就是配置url schema，然后让前端同学进行跳转，然后在分别在这三个方法中进行处理（但是现在都是只用后两个了）
+<p>###### 产品提出需求，说要做类似电商类app在微信分享页中或者qq中跳转我们自己的app的功能，一般情况下来说直接想到的就是配置url schema，然后让前端同学进行跳转，然后在分别在这三个方法中进行处理（但是现在都是只用后两个了）
 * 3个回调的功能基本一样，都是在别人通过URL Schemes打开应用的时候会执行的
 * A回调是在iOS2.0的时候推出的，参数只有url。
 * B回到是在iOS4.2的时候推出的，参数有url sourceApplication annotation.
@@ -175,10 +175,10 @@ UIKIT_EXTERN NSString *const UIApplicationOpenURLOptionsAnnotationKey NS_AVAILAB
 UIKIT_EXTERN NSString *const UIApplicationOpenURLOptionsOpenInPlaceKey NS_AVAILABLE_IOS(9_0);   // value is a bool NSNumber, set to YES if the file needs to be copied before use</p>
 
 <p>```
-######然而我们的腾讯爸爸屏蔽了这个功能，QQ和微信在自身的浏览器中都是无法打开我们的app的，于是就要祭出iOS9之后推出的新技术 <strong>universal link</strong></p>
+###### 然而我们的腾讯爸爸屏蔽了这个功能，QQ和微信在自身的浏览器中都是无法打开我们的app的，于是就要祭出iOS9之后推出的新技术 <strong>universal link</strong></p>
 
 <h1 id="universal-link">Universal Link简介</h1>
-<p>######简单来说即当用户在 WKWebView、UIWebView 或者 Safari 中点击一个链接，如果设备上安装了适配该链接的 app，就可以跳转该 app 对应的页面，否则仍然展示网页。网上已经有一堆讲universal link 配置的blog，我这里大概总结一下容易步骤
+<p>###### 简单来说即当用户在 WKWebView、UIWebView 或者 Safari 中点击一个链接，如果设备上安装了适配该链接的 app，就可以跳转该 app 对应的页面，否则仍然展示网页。网上已经有一堆讲universal link 配置的blog，我这里大概总结一下容易步骤
 * 1 创建一个包含 JSON 数据的 apple-app-site-association 文件，内容格式如下：
 <img src="http://upload-images.jianshu.io/upload_images/716949-c15209a21e60754e.jpeg?imageMogr2/auto-orient/strip%7CimageView2/2" alt="" /></p>
 

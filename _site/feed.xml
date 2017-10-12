@@ -3,45 +3,45 @@
   <channel>
     <title>阿谦</title>
     <description>welcome</description>
-    <link>http://shangqianForFun/</link>
-    <atom:link href="http://shangqianForFun/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 16 Apr 2017 13:17:37 +0800</pubDate>
-    <lastBuildDate>Sun, 16 Apr 2017 13:17:37 +0800</lastBuildDate>
-    <generator>Jekyll v3.1.1</generator>
+    <link>http://localhost:4000/</link>
+    <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Thu, 12 Oct 2017 17:15:45 +0800</pubDate>
+    <lastBuildDate>Thu, 12 Oct 2017 17:15:45 +0800</lastBuildDate>
+    <generator>Jekyll v3.6.0</generator>
     
       <item>
         <title>iOS通用链</title>
-        <description>&lt;h1 id=&quot;section&quot;&gt;问题&lt;/h1&gt;
-&lt;p&gt;###### 产品提出需求，说要做类似电商类app在微信分享页中或者qq中跳转我们自己的app的功能，一般情况下来说直接想到的就是配置url schema，然后让前端同学进行跳转，然后在分别在这三个方法中进行处理（但是现在都是只用后两个了）
-* 3个回调的功能基本一样，都是在别人通过URL Schemes打开应用的时候会执行的
-* A回调是在iOS2.0的时候推出的，参数只有url。
-* B回到是在iOS4.2的时候推出的，参数有url sourceApplication annotation.
-* C回调是iOS9.0的时候推出的，参数有url options。options有下面几个key
-* 这几个回调是有优先级的。C&amp;gt;B&amp;gt;A。也就是说，如果你3个回调都实现了，那么程序只会执行C回调。其他回调是不会执行的。（当然，iOS9以下只会执行B回调）&lt;/p&gt;
-
-&lt;p&gt;```&lt;/p&gt;
-
+        <description>&lt;h1 id=&quot;问题&quot;&gt;问题&lt;/h1&gt;
+&lt;h6 id=&quot;产品提出需求说要做类似电商类app在微信分享页中或者qq中跳转我们自己的app的功能一般情况下来说直接想到的就是配置url-schema然后让前端同学进行跳转然后在分别在这三个方法中进行处理但是现在都是只用后两个了&quot;&gt;产品提出需求，说要做类似电商类app在微信分享页中或者qq中跳转我们自己的app的功能，一般情况下来说直接想到的就是配置url schema，然后让前端同学进行跳转，然后在分别在这三个方法中进行处理（但是现在都是只用后两个了）&lt;/h6&gt;
 &lt;ul&gt;
-  &lt;li&gt;(BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url NS_DEPRECATED_IOS(2_0, 9_0, “Please use application:openURL:options:”) __TVOS_PROHIBITED;&lt;/li&gt;
-  &lt;li&gt;(BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(nullable NSString *)sourceApplication annotation:(id)annotation NS_DEPRECATED_IOS(4_2, 9_0, “Please use application:openURL:options:”) __TVOS_PROHIBITED;&lt;/li&gt;
-  &lt;li&gt;(BOOL)application:(UIApplication &lt;em&gt;)app openURL:(NSURL *)url options:(NSDictionary&amp;lt;NSString&lt;/em&gt;, id&amp;gt; *)options NS_AVAILABLE_IOS(9_0); // no equiv. notification. return NO if the application can’t open for some reason&lt;/li&gt;
+  &lt;li&gt;3个回调的功能基本一样，都是在别人通过URL Schemes打开应用的时候会执行的&lt;/li&gt;
+  &lt;li&gt;A回调是在iOS2.0的时候推出的，参数只有url。&lt;/li&gt;
+  &lt;li&gt;B回到是在iOS4.2的时候推出的，参数有url sourceApplication annotation.&lt;/li&gt;
+  &lt;li&gt;C回调是iOS9.0的时候推出的，参数有url options。options有下面几个key&lt;/li&gt;
+  &lt;li&gt;这几个回调是有优先级的。C&amp;gt;B&amp;gt;A。也就是说，如果你3个回调都实现了，那么程序只会执行C回调。其他回调是不会执行的。（当然，iOS9以下只会执行B回调）&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;```&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url NS_DEPRECATED_IOS(2_0, 9_0, &quot;Please use application:openURL:options:&quot;) __TVOS_PROHIBITED;
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(nullable NSString *)sourceApplication annotation:(id)annotation NS_DEPRECATED_IOS(4_2, 9_0, &quot;Please use application:openURL:options:&quot;) __TVOS_PROHIBITED;
+- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary&amp;lt;NSString*, id&amp;gt; *)options NS_AVAILABLE_IOS(9_0); // no equiv. notification. return NO if the application can't open for some reason
 
-&lt;p&gt;```
-// Keys for application:openURL:options:
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;// Keys for application:openURL:options:
 UIKIT_EXTERN NSString *const UIApplicationOpenURLOptionsSourceApplicationKey NS_AVAILABLE_IOS(9_0);   // value is an NSString containing the bundle ID of the originating application
-UIKIT_EXTERN NSString *const UIApplicationOpenURLOptionsAnnotationKey NS_AVAILABLE_IOS(9_0);   // value is a property-list typed object corresponding to what the originating application passed in UIDocumentInteractionController’s annotation property
-UIKIT_EXTERN NSString *const UIApplicationOpenURLOptionsOpenInPlaceKey NS_AVAILABLE_IOS(9_0);   // value is a bool NSNumber, set to YES if the file needs to be copied before use&lt;/p&gt;
+UIKIT_EXTERN NSString *const UIApplicationOpenURLOptionsAnnotationKey NS_AVAILABLE_IOS(9_0);   // value is a property-list typed object corresponding to what the originating application passed in UIDocumentInteractionController's annotation property
+UIKIT_EXTERN NSString *const UIApplicationOpenURLOptionsOpenInPlaceKey NS_AVAILABLE_IOS(9_0);   // value is a bool NSNumber, set to YES if the file needs to be copied before use
 
-&lt;p&gt;```
-###### 然而我们的腾讯爸爸屏蔽了这个功能，QQ和微信在自身的浏览器中都是无法打开我们的app的，于是就要祭出iOS9之后推出的新技术 &lt;strong&gt;universal link&lt;/strong&gt;&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;h6 id=&quot;然而我们的腾讯爸爸屏蔽了这个功能qq和微信在自身的浏览器中都是无法打开我们的app的于是就要祭出ios9之后推出的新技术-universal-link&quot;&gt;然而我们的腾讯爸爸屏蔽了这个功能，QQ和微信在自身的浏览器中都是无法打开我们的app的，于是就要祭出iOS9之后推出的新技术 &lt;strong&gt;universal link&lt;/strong&gt;&lt;/h6&gt;
 
-&lt;h1 id=&quot;universal-link&quot;&gt;Universal Link简介&lt;/h1&gt;
-&lt;p&gt;###### 简单来说即当用户在 WKWebView、UIWebView 或者 Safari 中点击一个链接，如果设备上安装了适配该链接的 app，就可以跳转该 app 对应的页面，否则仍然展示网页。网上已经有一堆讲universal link 配置的blog，我这里大概总结一下容易步骤
-* 1 创建一个包含 JSON 数据的 apple-app-site-association 文件，内容格式如下：
-&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/716949-c15209a21e60754e.jpeg?imageMogr2/auto-orient/strip%7CimageView2/2&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;h1 id=&quot;universal-link简介&quot;&gt;Universal Link简介&lt;/h1&gt;
+&lt;h6 id=&quot;简单来说即当用户在-wkwebviewuiwebview-或者-safari-中点击一个链接如果设备上安装了适配该链接的-app就可以跳转该-app-对应的页面否则仍然展示网页网上已经有一堆讲universal-link-配置的blog我这里大概总结一下容易步骤&quot;&gt;简单来说即当用户在 WKWebView、UIWebView 或者 Safari 中点击一个链接，如果设备上安装了适配该链接的 app，就可以跳转该 app 对应的页面，否则仍然展示网页。网上已经有一堆讲universal link 配置的blog，我这里大概总结一下容易步骤&lt;/h6&gt;
+&lt;ul&gt;
+  &lt;li&gt;1 创建一个包含 JSON 数据的 apple-app-site-association 文件，内容格式如下：
+&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/716949-c15209a21e60754e.jpeg?imageMogr2/auto-orient/strip%7CimageView2/2&quot; alt=&quot;&quot; /&gt;&lt;/li&gt;
+&lt;/ul&gt;
 
 &lt;p&gt;appID:’teamID’ + ‘bundleID’&lt;/p&gt;
 
@@ -63,24 +63,24 @@ UIKIT_EXTERN NSString *const UIApplicationOpenURLOptionsOpenInPlaceKey NS_AVAILA
   &lt;li&gt;5 实现的代理方法&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;```
-- (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray *))restorationHandler
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;- (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray *))restorationHandler
 {
-    if ([userActivity.activityType   isEqualToString:NSUserActivityTypeBrowsingWeb]) {&lt;/p&gt;
+    if ([userActivity.activityType   isEqualToString:NSUserActivityTypeBrowsingWeb]) {
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  NSURL *webpageURL = userActivity.webpageURL;
-  NSString *host = webpageURL.host;
+      NSURL *webpageURL = userActivity.webpageURL;
+      NSString *host = webpageURL.host;
 
-  if ([host isEqualToString:@&quot;xxxx.com&quot;]) { // &quot;xxxx.com&quot;为配置的域名
-    // 解析路径、跳转到指定界面 啦啦啦啦
-     }
-else {
-  [[UIApplication sharedApplication]openURL:webpageURL];
-}   }   return YES; }
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+      if ([host isEqualToString:@&quot;xxxx.com&quot;]) { // &quot;xxxx.com&quot;为配置的域名
+        // 解析路径、跳转到指定界面 啦啦啦啦
+         }
+    else {
+      [[UIApplication sharedApplication]openURL:webpageURL];
+    }
+  }
+  return YES;
+}
 
-&lt;p&gt;```&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;ul&gt;
   &lt;li&gt;6 跨域问题&lt;/li&gt;
@@ -90,82 +90,83 @@ else {
   &lt;p&gt;When a user is browsing your website in Safari and they tap a universal link to a URL in the same domain as the current webpage, iOS respects the user’s most likely intent and opens the link in Safari. If the user taps a universal link to a URL in a different domain, iOS opens the link in your app.&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;h6 id=&quot;universal-link-safariuniversal-link-&quot;&gt;这里也是比较坑的地方你当前浏览器所打开的网页域名要和你跳转的universal link 的域名不同才能跳转，否则他就会认为你想在Safari中打开，然后就打开了对应的网页。所以一般情况下都需要去解析一个二级域名去专门对这个universal link 进行跳转。&lt;/h6&gt;
+&lt;h6 id=&quot;这里也是比较坑的地方你当前浏览器所打开的网页域名要和你跳转的universal-link-的域名不同才能跳转否则他就会认为你想在safari中打开然后就打开了对应的网页所以一般情况下都需要去解析一个二级域名去专门对这个universal-link-进行跳转&quot;&gt;这里也是比较坑的地方你当前浏览器所打开的网页域名要和你跳转的universal link 的域名不同才能跳转，否则他就会认为你想在Safari中打开，然后就打开了对应的网页。所以一般情况下都需要去解析一个二级域名去专门对这个universal link 进行跳转。&lt;/h6&gt;
 
 </description>
         <pubDate>Sun, 16 Apr 2017 00:00:00 +0800</pubDate>
-        <link>http://shangqianForFun/2017/04/iOS-%E9%80%9A%E7%94%A8%E9%93%BE/</link>
-        <guid isPermaLink="true">http://shangqianForFun/2017/04/iOS-%E9%80%9A%E7%94%A8%E9%93%BE/</guid>
+        <link>http://localhost:4000/2017/04/iOS-%E9%80%9A%E7%94%A8%E9%93%BE/</link>
+        <guid isPermaLink="true">http://localhost:4000/2017/04/iOS-%E9%80%9A%E7%94%A8%E9%93%BE/</guid>
         
         
       </item>
     
       <item>
         <title>iOS运行状态&amp;后台执行</title>
-        <description>&lt;h3 id=&quot;section&quot;&gt;非运行状态&lt;/h3&gt;
+        <description>&lt;h3 id=&quot;非运行状态&quot;&gt;非运行状态&lt;/h3&gt;
 &lt;blockquote&gt;
   &lt;p&gt;app 没有启动，或者正在运行，但是被系统杀死。&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;h3 id=&quot;section-1&quot;&gt;闲置状态&lt;/h3&gt;
+&lt;h3 id=&quot;闲置状态&quot;&gt;闲置状态&lt;/h3&gt;
 &lt;blockquote&gt;
   &lt;p&gt;app在前台运行，但是当前没有接收事件(可能在执行一些代码)这是一个短暂的中转状态。&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;h3 id=&quot;section-2&quot;&gt;运行状态&lt;/h3&gt;
+&lt;h3 id=&quot;运行状态&quot;&gt;运行状态&lt;/h3&gt;
 &lt;blockquote&gt;
   &lt;p&gt;app在前台运行，并且在接收事件，这是一个前台app的普通状态。&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;h3 id=&quot;section-3&quot;&gt;后台状态&lt;/h3&gt;
+&lt;h3 id=&quot;后台状态&quot;&gt;后台状态&lt;/h3&gt;
 &lt;blockquote&gt;
   &lt;p&gt;app在后台运行并且在执行一些代码。大多数app在被挂起之前，只会在这个状态短暂的停留，然而，一个app可以请求额外的运行时间，以保持这个状态更长的时间。&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;h3 id=&quot;section-4&quot;&gt;挂起状态&lt;/h3&gt;
+&lt;h3 id=&quot;挂起状态&quot;&gt;挂起状态&lt;/h3&gt;
 &lt;blockquote&gt;
   &lt;p&gt;app在后台不执行代码。系统会将app自动设置为这个状态，并且设置之前不会告知app。当app挂起的时候，app留在内存里但是不执行任何代码。当系统遇到一个低内存的情况，系统会悄悄的清除挂起的app，为前台的app获取更多的空间。&lt;/p&gt;
 &lt;/blockquote&gt;
 
 &lt;p&gt;&lt;img src=&quot;http://i2.muimg.com/567571/bdd2059b085d158b.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
-&lt;h1 id=&quot;app&quot;&gt;app后台运行&lt;/h1&gt;
-&lt;p&gt;大多数app可以被系统挂起，但是有一些app需要在后台继续运行，例如音乐类的（需要在后台播放），运动类的需要实时监测运动轨迹等，还有一些需要在后台下载一些东西。iOS系统为需要后台运行的app提供了三种技术：
-* 你的app在前台开启了一个短期任务，在进入后台的时候可以向系统申请时间去完成这个任务
-* app在前台开启了一个下载任务，可以将这些下载的任务交给系统。由此，app可以在挂起或者进入后台的时候继续下载任务
-* app需要在后台执行某些特定的任务，需要声明一个或者多个的后台执行模式
-## 执行有限时长的任务
-* app在退到后台的时候，会进入到一个休眠状态，系统会很快将app挂起。如果你的app需要一些额外时间去完成任务你可以用UIApplication对象的 &lt;code class=&quot;highlighter-rouge&quot;&gt;beginBackgroundTaskWithName:expirationHandler: or beginBackgroundTaskWithExpirationHandler:&lt;/code&gt; 调用这个方法会暂时延迟app被挂起的时间，在任务完成的时候你需要调用&lt;code class=&quot;highlighter-rouge&quot;&gt;endBackgroundTask: &lt;/code&gt; 去告诉系统完成了任务，并且系统可以将其挂起。调用 &lt;code class=&quot;highlighter-rouge&quot;&gt;beginBackgroundTaskWithName:expirationHandler: or beginBackgroundTaskWithExpirationHandler: &lt;/code&gt;会生成一个对应的任务的token。当完成一个对应任务的时候必须调用&lt;code class=&quot;highlighter-rouge&quot;&gt;endBackgroundTask:&lt;/code&gt;传入对应的token，让系统知道，任务已经完成。如果没有调用此方法就会导致app crash。如果你提供了一个任务过期的handler，在任务完成的时候系统会调用这个handler去终结这个任务去避免app crash。
- &lt;code class=&quot;highlighter-rouge&quot;&gt;beginBackgroundTaskWithName:expirationHandler: or beginBackgroundTaskWithExpirationHandler:&lt;/code&gt; 在前台的时候也可以调用，只要你再任务完成时调用&lt;code class=&quot;highlighter-rouge&quot;&gt;endBackgroundTask:&lt;/code&gt;即可&lt;/p&gt;
+&lt;h1 id=&quot;app后台运行&quot;&gt;app后台运行&lt;/h1&gt;
+&lt;p&gt;大多数app可以被系统挂起，但是有一些app需要在后台继续运行，例如音乐类的（需要在后台播放），运动类的需要实时监测运动轨迹等，还有一些需要在后台下载一些东西。iOS系统为需要后台运行的app提供了三种技术：&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;你的app在前台开启了一个短期任务，在进入后台的时候可以向系统申请时间去完成这个任务&lt;/li&gt;
+  &lt;li&gt;app在前台开启了一个下载任务，可以将这些下载的任务交给系统。由此，app可以在挂起或者进入后台的时候继续下载任务&lt;/li&gt;
+  &lt;li&gt;app需要在后台执行某些特定的任务，需要声明一个或者多个的后台执行模式
+    &lt;h2 id=&quot;执行有限时长的任务&quot;&gt;执行有限时长的任务&lt;/h2&gt;
+  &lt;/li&gt;
+  &lt;li&gt;app在退到后台的时候，会进入到一个休眠状态，系统会很快将app挂起。如果你的app需要一些额外时间去完成任务你可以用UIApplication对象的 &lt;code class=&quot;highlighter-rouge&quot;&gt;beginBackgroundTaskWithName:expirationHandler: or beginBackgroundTaskWithExpirationHandler:&lt;/code&gt; 调用这个方法会暂时延迟app被挂起的时间，在任务完成的时候你需要调用&lt;code class=&quot;highlighter-rouge&quot;&gt;endBackgroundTask: &lt;/code&gt; 去告诉系统完成了任务，并且系统可以将其挂起。调用 &lt;code class=&quot;highlighter-rouge&quot;&gt;beginBackgroundTaskWithName:expirationHandler: or beginBackgroundTaskWithExpirationHandler: &lt;/code&gt;会生成一个对应的任务的token。当完成一个对应任务的时候必须调用&lt;code class=&quot;highlighter-rouge&quot;&gt;endBackgroundTask:&lt;/code&gt;传入对应的token，让系统知道，任务已经完成。如果没有调用此方法就会导致app crash。如果你提供了一个任务过期的handler，在任务完成的时候系统会调用这个handler去终结这个任务去避免app crash。
+ &lt;code class=&quot;highlighter-rouge&quot;&gt;beginBackgroundTaskWithName:expirationHandler: or beginBackgroundTaskWithExpirationHandler:&lt;/code&gt; 在前台的时候也可以调用，只要你再任务完成时调用&lt;code class=&quot;highlighter-rouge&quot;&gt;endBackgroundTask:&lt;/code&gt;即可&lt;/li&gt;
+&lt;/ul&gt;
 
-&lt;p&gt;```
-- (void)applicationDidEnterBackground:(UIApplication *)application
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;- (void)applicationDidEnterBackground:(UIApplication *)application
 {
-    bgTask = [application beginBackgroundTaskWithName:@”MyTask” expirationHandler:^{
+    bgTask = [application beginBackgroundTaskWithName:@&quot;MyTask&quot; expirationHandler:^{
         // Clean up any unfinished task business by marking where you
         // stopped or ending the task outright.
         [application endBackgroundTask:bgTask];
         bgTask = UIBackgroundTaskInvalid;
-    }];&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;// Start the long-running task and return immediately.
-dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-    // Do the work associated with the task, preferably in chunks.
+    }];
  
-    [application endBackgroundTask:bgTask];
-    bgTask = UIBackgroundTaskInvalid;
-}); }
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+    // Start the long-running task and return immediately.
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        // Do the work associated with the task, preferably in chunks.
+ 
+        [application endBackgroundTask:bgTask];
+        bgTask = UIBackgroundTaskInvalid;
+    });
+}
 
-&lt;p&gt;```&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;在这个方法中bgTask就是要执行的延时任务，expirationHandler就是一个任务过期的回调，以防任务时间过长，或者是调用endBackgroundTask失败。这个任务交给了GCD全局异步队列。&lt;/p&gt;
 
 </description>
         <pubDate>Sat, 01 Apr 2017 00:00:00 +0800</pubDate>
-        <link>http://shangqianForFun/2017/04/iOS-app-%E8%BF%90%E8%A1%8C%E7%8A%B6%E6%80%81/</link>
-        <guid isPermaLink="true">http://shangqianForFun/2017/04/iOS-app-%E8%BF%90%E8%A1%8C%E7%8A%B6%E6%80%81/</guid>
+        <link>http://localhost:4000/2017/04/iOS-app-%E8%BF%90%E8%A1%8C%E7%8A%B6%E6%80%81/</link>
+        <guid isPermaLink="true">http://localhost:4000/2017/04/iOS-app-%E8%BF%90%E8%A1%8C%E7%8A%B6%E6%80%81/</guid>
         
         
       </item>

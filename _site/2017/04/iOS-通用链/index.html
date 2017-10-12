@@ -7,16 +7,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   <title>iOS通用链</title>
-  <meta name="description" content="问题###### 产品提出需求，说要做类似电商类app在微信分享页中或者qq中跳转我们自己的app的功能，一般情况下来说直接想到的就是配置url schema，然后让前端同学进行跳转，然后在分别在这三个方法中进行处理（但是现在都是只用后两个了）* 3个回调的功能基本一样，都是在别人通过URL Schemes打开应...">
+  <meta name="description" content="问题产品提出需求，说要做类似电商类app在微信分享页中或者qq中跳转我们自己的app的功能，一般情况下来说直接想到的就是配置url schema，然后让前端同学进行跳转，然后在分别在这三个方法中进行处理（但是现在都是只用后两个了）  3个回调的功能基本一样，都是在别人通过URL Schemes打开应用的时候会执行...">
   <meta name="author" content="leopardpan">
 
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="iOS通用链">
-  <meta name="twitter:description" content="问题###### 产品提出需求，说要做类似电商类app在微信分享页中或者qq中跳转我们自己的app的功能，一般情况下来说直接想到的就是配置url schema，然后让前端同学进行跳转，然后在分别在这三个方法中进行处理（但是现在都是只用后两个了）* 3个回调的功能基本一样，都是在别人通过URL Schemes打开应...">
+  <meta name="twitter:description" content="问题产品提出需求，说要做类似电商类app在微信分享页中或者qq中跳转我们自己的app的功能，一般情况下来说直接想到的就是配置url schema，然后让前端同学进行跳转，然后在分别在这三个方法中进行处理（但是现在都是只用后两个了）  3个回调的功能基本一样，都是在别人通过URL Schemes打开应用的时候会执行...">
   
   <meta property="og:type" content="article">
   <meta property="og:title" content="iOS通用链">
-  <meta property="og:description" content="问题###### 产品提出需求，说要做类似电商类app在微信分享页中或者qq中跳转我们自己的app的功能，一般情况下来说直接想到的就是配置url schema，然后让前端同学进行跳转，然后在分别在这三个方法中进行处理（但是现在都是只用后两个了）* 3个回调的功能基本一样，都是在别人通过URL Schemes打开应...">
+  <meta property="og:description" content="问题产品提出需求，说要做类似电商类app在微信分享页中或者qq中跳转我们自己的app的功能，一般情况下来说直接想到的就是配置url schema，然后让前端同学进行跳转，然后在分别在这三个方法中进行处理（但是现在都是只用后两个了）  3个回调的功能基本一样，都是在别人通过URL Schemes打开应用的时候会执行...">
   
   <link rel="icon" type="image/png" href="/images/favicon.png" />
   <link href="/images/favicon.png" rel="shortcut icon" type="image/png">
@@ -24,8 +24,8 @@
   <link rel="stylesheet" href="/css/main.css">
   <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 
-  <link rel="canonical" href="http://shangqianForFun/2017/04/iOS-%E9%80%9A%E7%94%A8%E9%93%BE/">
-  <link rel="alternate" type="application/rss+xml" title="阿谦" href="http://shangqianForFun/feed.xml">
+  <link rel="canonical" href="http://localhost:4000/2017/04/iOS-%E9%80%9A%E7%94%A8%E9%93%BE/">
+  <link rel="alternate" type="application/rss+xml" title="阿谦" href="http://localhost:4000/feed.xml">
   
   <meta name="google-site-verification" content="1-1ZlHoRvM0T2FqPbW2S-qLgYXN6rsn52kErlMPd_gw" />
 
@@ -150,37 +150,37 @@
   </header>
 
   <section class="post">
-    <h1 id="section">问题</h1>
-<p>###### 产品提出需求，说要做类似电商类app在微信分享页中或者qq中跳转我们自己的app的功能，一般情况下来说直接想到的就是配置url schema，然后让前端同学进行跳转，然后在分别在这三个方法中进行处理（但是现在都是只用后两个了）
-* 3个回调的功能基本一样，都是在别人通过URL Schemes打开应用的时候会执行的
-* A回调是在iOS2.0的时候推出的，参数只有url。
-* B回到是在iOS4.2的时候推出的，参数有url sourceApplication annotation.
-* C回调是iOS9.0的时候推出的，参数有url options。options有下面几个key
-* 这几个回调是有优先级的。C&gt;B&gt;A。也就是说，如果你3个回调都实现了，那么程序只会执行C回调。其他回调是不会执行的。（当然，iOS9以下只会执行B回调）</p>
-
-<p>```</p>
-
+    <h1 id="问题">问题</h1>
+<h6 id="产品提出需求说要做类似电商类app在微信分享页中或者qq中跳转我们自己的app的功能一般情况下来说直接想到的就是配置url-schema然后让前端同学进行跳转然后在分别在这三个方法中进行处理但是现在都是只用后两个了">产品提出需求，说要做类似电商类app在微信分享页中或者qq中跳转我们自己的app的功能，一般情况下来说直接想到的就是配置url schema，然后让前端同学进行跳转，然后在分别在这三个方法中进行处理（但是现在都是只用后两个了）</h6>
 <ul>
-  <li>(BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url NS_DEPRECATED_IOS(2_0, 9_0, “Please use application:openURL:options:”) __TVOS_PROHIBITED;</li>
-  <li>(BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(nullable NSString *)sourceApplication annotation:(id)annotation NS_DEPRECATED_IOS(4_2, 9_0, “Please use application:openURL:options:”) __TVOS_PROHIBITED;</li>
-  <li>(BOOL)application:(UIApplication <em>)app openURL:(NSURL *)url options:(NSDictionary&lt;NSString</em>, id&gt; *)options NS_AVAILABLE_IOS(9_0); // no equiv. notification. return NO if the application can’t open for some reason</li>
+  <li>3个回调的功能基本一样，都是在别人通过URL Schemes打开应用的时候会执行的</li>
+  <li>A回调是在iOS2.0的时候推出的，参数只有url。</li>
+  <li>B回到是在iOS4.2的时候推出的，参数有url sourceApplication annotation.</li>
+  <li>C回调是iOS9.0的时候推出的，参数有url options。options有下面几个key</li>
+  <li>这几个回调是有优先级的。C&gt;B&gt;A。也就是说，如果你3个回调都实现了，那么程序只会执行C回调。其他回调是不会执行的。（当然，iOS9以下只会执行B回调）</li>
 </ul>
 
-<p>```</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url NS_DEPRECATED_IOS(2_0, 9_0, "Please use application:openURL:options:") __TVOS_PROHIBITED;
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(nullable NSString *)sourceApplication annotation:(id)annotation NS_DEPRECATED_IOS(4_2, 9_0, "Please use application:openURL:options:") __TVOS_PROHIBITED;
+- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary&lt;NSString*, id&gt; *)options NS_AVAILABLE_IOS(9_0); // no equiv. notification. return NO if the application can't open for some reason
 
-<p>```
-// Keys for application:openURL:options:
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// Keys for application:openURL:options:
 UIKIT_EXTERN NSString *const UIApplicationOpenURLOptionsSourceApplicationKey NS_AVAILABLE_IOS(9_0);   // value is an NSString containing the bundle ID of the originating application
-UIKIT_EXTERN NSString *const UIApplicationOpenURLOptionsAnnotationKey NS_AVAILABLE_IOS(9_0);   // value is a property-list typed object corresponding to what the originating application passed in UIDocumentInteractionController’s annotation property
-UIKIT_EXTERN NSString *const UIApplicationOpenURLOptionsOpenInPlaceKey NS_AVAILABLE_IOS(9_0);   // value is a bool NSNumber, set to YES if the file needs to be copied before use</p>
+UIKIT_EXTERN NSString *const UIApplicationOpenURLOptionsAnnotationKey NS_AVAILABLE_IOS(9_0);   // value is a property-list typed object corresponding to what the originating application passed in UIDocumentInteractionController's annotation property
+UIKIT_EXTERN NSString *const UIApplicationOpenURLOptionsOpenInPlaceKey NS_AVAILABLE_IOS(9_0);   // value is a bool NSNumber, set to YES if the file needs to be copied before use
 
-<p>```
-###### 然而我们的腾讯爸爸屏蔽了这个功能，QQ和微信在自身的浏览器中都是无法打开我们的app的，于是就要祭出iOS9之后推出的新技术 <strong>universal link</strong></p>
+</code></pre></div></div>
+<h6 id="然而我们的腾讯爸爸屏蔽了这个功能qq和微信在自身的浏览器中都是无法打开我们的app的于是就要祭出ios9之后推出的新技术-universal-link">然而我们的腾讯爸爸屏蔽了这个功能，QQ和微信在自身的浏览器中都是无法打开我们的app的，于是就要祭出iOS9之后推出的新技术 <strong>universal link</strong></h6>
 
-<h1 id="universal-link">Universal Link简介</h1>
-<p>###### 简单来说即当用户在 WKWebView、UIWebView 或者 Safari 中点击一个链接，如果设备上安装了适配该链接的 app，就可以跳转该 app 对应的页面，否则仍然展示网页。网上已经有一堆讲universal link 配置的blog，我这里大概总结一下容易步骤
-* 1 创建一个包含 JSON 数据的 apple-app-site-association 文件，内容格式如下：
-<img src="http://upload-images.jianshu.io/upload_images/716949-c15209a21e60754e.jpeg?imageMogr2/auto-orient/strip%7CimageView2/2" alt="" /></p>
+<h1 id="universal-link简介">Universal Link简介</h1>
+<h6 id="简单来说即当用户在-wkwebviewuiwebview-或者-safari-中点击一个链接如果设备上安装了适配该链接的-app就可以跳转该-app-对应的页面否则仍然展示网页网上已经有一堆讲universal-link-配置的blog我这里大概总结一下容易步骤">简单来说即当用户在 WKWebView、UIWebView 或者 Safari 中点击一个链接，如果设备上安装了适配该链接的 app，就可以跳转该 app 对应的页面，否则仍然展示网页。网上已经有一堆讲universal link 配置的blog，我这里大概总结一下容易步骤</h6>
+<ul>
+  <li>1 创建一个包含 JSON 数据的 apple-app-site-association 文件，内容格式如下：
+<img src="http://upload-images.jianshu.io/upload_images/716949-c15209a21e60754e.jpeg?imageMogr2/auto-orient/strip%7CimageView2/2" alt="" /></li>
+</ul>
 
 <p>appID:’teamID’ + ‘bundleID’</p>
 
@@ -202,24 +202,24 @@ UIKIT_EXTERN NSString *const UIApplicationOpenURLOptionsOpenInPlaceKey NS_AVAILA
   <li>5 实现的代理方法</li>
 </ul>
 
-<p>```
-- (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray *))restorationHandler
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>- (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray *))restorationHandler
 {
-    if ([userActivity.activityType   isEqualToString:NSUserActivityTypeBrowsingWeb]) {</p>
+    if ([userActivity.activityType   isEqualToString:NSUserActivityTypeBrowsingWeb]) {
 
-<div class="highlighter-rouge"><pre class="highlight"><code>  NSURL *webpageURL = userActivity.webpageURL;
-  NSString *host = webpageURL.host;
+      NSURL *webpageURL = userActivity.webpageURL;
+      NSString *host = webpageURL.host;
 
-  if ([host isEqualToString:@"xxxx.com"]) { // "xxxx.com"为配置的域名
-    // 解析路径、跳转到指定界面 啦啦啦啦
-     }
-else {
-  [[UIApplication sharedApplication]openURL:webpageURL];
-}   }   return YES; }
-</code></pre>
-</div>
+      if ([host isEqualToString:@"xxxx.com"]) { // "xxxx.com"为配置的域名
+        // 解析路径、跳转到指定界面 啦啦啦啦
+         }
+    else {
+      [[UIApplication sharedApplication]openURL:webpageURL];
+    }
+  }
+  return YES;
+}
 
-<p>```</p>
+</code></pre></div></div>
 
 <ul>
   <li>6 跨域问题</li>
@@ -229,7 +229,7 @@ else {
   <p>When a user is browsing your website in Safari and they tap a universal link to a URL in the same domain as the current webpage, iOS respects the user’s most likely intent and opens the link in Safari. If the user taps a universal link to a URL in a different domain, iOS opens the link in your app.</p>
 </blockquote>
 
-<h6 id="universal-link-safariuniversal-link-">这里也是比较坑的地方你当前浏览器所打开的网页域名要和你跳转的universal link 的域名不同才能跳转，否则他就会认为你想在Safari中打开，然后就打开了对应的网页。所以一般情况下都需要去解析一个二级域名去专门对这个universal link 进行跳转。</h6>
+<h6 id="这里也是比较坑的地方你当前浏览器所打开的网页域名要和你跳转的universal-link-的域名不同才能跳转否则他就会认为你想在safari中打开然后就打开了对应的网页所以一般情况下都需要去解析一个二级域名去专门对这个universal-link-进行跳转">这里也是比较坑的地方你当前浏览器所打开的网页域名要和你跳转的universal link 的域名不同才能跳转，否则他就会认为你想在Safari中打开，然后就打开了对应的网页。所以一般情况下都需要去解析一个二级域名去专门对这个universal link 进行跳转。</h6>
 
 
 

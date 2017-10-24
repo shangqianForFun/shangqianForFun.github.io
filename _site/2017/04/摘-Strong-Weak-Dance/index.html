@@ -6,17 +6,17 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <title>iOS运行状态&amp;后台执行</title>
-  <meta name="description" content="非运行状态  app 没有启动，或者正在运行，但是被系统杀死。">
+  <title>[摘] Strong-Weak Dance</title>
+  <meta name="description" content="[摘] Strong-Weak Dance">
   <meta name="author" content="leopardpan">
 
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="iOS运行状态&amp;后台执行">
-  <meta name="twitter:description" content="非运行状态  app 没有启动，或者正在运行，但是被系统杀死。">
+  <meta name="twitter:title" content="[摘] Strong-Weak Dance">
+  <meta name="twitter:description" content="[摘] Strong-Weak Dance">
   
   <meta property="og:type" content="article">
-  <meta property="og:title" content="iOS运行状态&amp;后台执行">
-  <meta property="og:description" content="非运行状态  app 没有启动，或者正在运行，但是被系统杀死。">
+  <meta property="og:title" content="[摘] Strong-Weak Dance">
+  <meta property="og:description" content="[摘] Strong-Weak Dance">
   
   <link rel="icon" type="image/png" href="/images/favicon.png" />
   <link href="/images/favicon.png" rel="shortcut icon" type="image/png">
@@ -24,7 +24,7 @@
   <link rel="stylesheet" href="/css/main.css">
   <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 
-  <link rel="canonical" href="http://localhost:4000/2017/04/iOS-app-%E8%BF%90%E8%A1%8C%E7%8A%B6%E6%80%81/">
+  <link rel="canonical" href="http://localhost:4000/2017/04/%E6%91%98-Strong-Weak-Dance/">
   <link rel="alternate" type="application/rss+xml" title="阿谦" href="http://localhost:4000/feed.xml">
   
   <meta name="google-site-verification" content="1-1ZlHoRvM0T2FqPbW2S-qLgYXN6rsn52kErlMPd_gw" />
@@ -139,7 +139,7 @@
         <div class="content-wrapper__inner">
             <article class="post-container post-container--single" itemscope itemtype="http://schema.org/BlogPosting">
   <header class="post-header">
-    <h1 class="post-title">iOS运行状态&后台执行</h1>
+    <h1 class="post-title">[摘] Strong-Weak Dance</h1>
     <div class="post-meta">
       <img src="/images/calendar.png" width="20px"/> 
       <time datetime="2017-04-01 00:00:00 +0800" itemprop="datePublished" class="post-meta__date date">2017-04-01</time>  
@@ -150,66 +150,72 @@
   </header>
 
   <section class="post">
-    <h3 id="非运行状态">非运行状态</h3>
-<blockquote>
-  <p>app 没有启动，或者正在运行，但是被系统杀死。</p>
-</blockquote>
+    <h1 id="摘-strong-weak-dance">[摘] Strong-Weak Dance</h1>
 
-<h3 id="闲置状态">闲置状态</h3>
-<blockquote>
-  <p>app在前台运行，但是当前没有接收事件(可能在执行一些代码)这是一个短暂的中转状态。</p>
-</blockquote>
+<p>在使用 Block 时，除了使用 __weak 修饰符避免循环引用外，还有一点经常容易忘记。苹果把它称为：“Strong-Weak Dance”。</p>
 
-<h3 id="运行状态">运行状态</h3>
-<blockquote>
-  <p>app在前台运行，并且在接收事件，这是一个前台app的普通状态。</p>
-</blockquote>
+<h3 id="问题来源">问题来源</h3>
 
-<h3 id="后台状态">后台状态</h3>
-<blockquote>
-  <p>app在后台运行并且在执行一些代码。大多数app在被挂起之前，只会在这个状态短暂的停留，然而，一个app可以请求额外的运行时间，以保持这个状态更长的时间。</p>
-</blockquote>
+<p>这是一种 强引用 –&gt; 弱引用 –&gt; 强引用 的变换过程。在弄明白为什么要如此大费周章之前，我们首先来看看一般的写法会有什么问题</p>
 
-<h3 id="挂起状态">挂起状态</h3>
-<blockquote>
-  <p>app在后台不执行代码。系统会将app自动设置为这个状态，并且设置之前不会告知app。当app挂起的时候，app留在内存里但是不执行任何代码。当系统遇到一个低内存的情况，系统会悄悄的清除挂起的app，为前台的app获取更多的空间。</p>
-</blockquote>
-
-<p><img src="http://i2.muimg.com/567571/bdd2059b085d158b.jpg" alt="" /></p>
-
-<h1 id="app后台运行">app后台运行</h1>
-<p>大多数app可以被系统挂起，但是有一些app需要在后台继续运行，例如音乐类的（需要在后台播放），运动类的需要实时监测运动轨迹等，还有一些需要在后台下载一些东西。iOS系统为需要后台运行的app提供了三种技术：</p>
-<ul>
-  <li>你的app在前台开启了一个短期任务，在进入后台的时候可以向系统申请时间去完成这个任务</li>
-  <li>app在前台开启了一个下载任务，可以将这些下载的任务交给系统。由此，app可以在挂起或者进入后台的时候继续下载任务</li>
-  <li>app需要在后台执行某些特定的任务，需要声明一个或者多个的后台执行模式
-    <h2 id="执行有限时长的任务">执行有限时长的任务</h2>
-  </li>
-  <li>app在退到后台的时候，会进入到一个休眠状态，系统会很快将app挂起。如果你的app需要一些额外时间去完成任务你可以用UIApplication对象的 <code class="highlighter-rouge">beginBackgroundTaskWithName:expirationHandler: or beginBackgroundTaskWithExpirationHandler:</code> 调用这个方法会暂时延迟app被挂起的时间，在任务完成的时候你需要调用<code class="highlighter-rouge">endBackgroundTask: </code> 去告诉系统完成了任务，并且系统可以将其挂起。调用 <code class="highlighter-rouge">beginBackgroundTaskWithName:expirationHandler: or beginBackgroundTaskWithExpirationHandler: </code>会生成一个对应的任务的token。当完成一个对应任务的时候必须调用<code class="highlighter-rouge">endBackgroundTask:</code>传入对应的token，让系统知道，任务已经完成。如果没有调用此方法就会导致app crash。如果你提供了一个任务过期的handler，在任务完成的时候系统会调用这个handler去终结这个任务去避免app crash。
- <code class="highlighter-rouge">beginBackgroundTaskWithName:expirationHandler: or beginBackgroundTaskWithExpirationHandler:</code> 在前台的时候也可以调用，只要你再任务完成时调用<code class="highlighter-rouge">endBackgroundTask:</code>即可</li>
-</ul>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>- (void)applicationDidEnterBackground:(UIApplication *)application
-{
-    bgTask = [application beginBackgroundTaskWithName:@"MyTask" expirationHandler:^{
-        // Clean up any unfinished task business by marking where you
-        // stopped or ending the task outright.
-        [application endBackgroundTask:bgTask];
-        bgTask = UIBackgroundTaskInvalid;
-    }];
- 
-    // Start the long-running task and return immediately.
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        // Do the work associated with the task, preferably in chunks.
- 
-        [application endBackgroundTask:bgTask];
-        bgTask = UIBackgroundTaskInvalid;
-    });
-}
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>__weak MyViewController *wself = self;
+self.completionHandler = ^(NSInteger result) {
+    [wself.property removeObserver: wself forKeyPath:@"pathName"];
+};
 
 </code></pre></div></div>
 
-<p>在这个方法中bgTask就是要执行的延时任务，expirationHandler就是一个任务过期的回调，以防任务时间过长，或者是调用endBackgroundTask失败。这个任务交给了GCD全局异步队列。</p>
+<p>这种写法可以避免循环引用，但是我们要考虑这样的问题：</p>
+
+<p>假设 block 被放在子线程中执行，而且执行过程中 self 在主线程被释放了。由于 wself 是一个弱引用，因此会自动变为 nil。而在 KVO 中，这会导致崩溃。</p>
+
+<h3 id="strong-weak-dance">Strong-Weak Dance</h3>
+
+<p>解决以上问题的方法很简单，新增一行代码即可：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>__weak MyViewController *wself = self;
+self.completionHandler = ^(NSInteger result) {
+    __strong __typeof(wself) sself = wself; // 强引用一次
+    [sself.property removeObserver: sself forKeyPath:@"pathName"];
+};
+
+</code></pre></div></div>
+
+<p>这样一来，self 所指向对象的引用计数变成 2，即使主线程中的 self 因为超出作用于而释放，对象的引用计数依然为 1，避免了对象的销毁</p>
+
+<p>1  Q：下面这行代码，将一个弱引用的指针赋值给强引用的指针，可以起到强引用效果么？</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>__strong __typeof(wself) sself = wself;
+
+</code></pre></div></div>
+<p>A：会的。引用计数描述的是对象而不是指针。这句话的意思是:
+sself 强引用 wself 指向的那个对象 因此对象的引用计数会增加一个</p>
+
+<p>2  Q: block 内部定义了sself，会不会因此强引用了 sself？
+A：不会。block 只有截获外部变量时，才会引用它。如果是内部新建一个，则没有任何问题</p>
+
+<p>3 Q: Q：如果在 block 内部没有强引用，而是通过 if 判断，是不是也可以，比如这样写：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>__weak MyViewController *wself = self;
+ wself.completionHandler = ^(NSInteger result) {
+     if (wself) { // 只有当 wself 不为 nil 时，才执行以下代码
+         [wself.property removeObserver: wself forKeyPath:@"pathName"];
+     }
+ };
+ 
+</code></pre></div></div>
+
+<p>A：不可以！考虑到多线程执行，也许在判断的时候，self 还没释放，但是执行 self 里面的代码时，就刚好释放了</p>
+
+<p>4 Q: 那按照这个说法，block 内部强引用也没用啊。也许 block 执行以前，self 就释放了。</p>
+
+<p>A：有用！如果在 block 执行以前，self 就释放了，那么 block 的引用计数降为 0，所以自己就会被释放。这样它根本就不会被执行。另外，如果执行一个为 nil 的闭包会导致崩溃。</p>
+
+<p>5 Q: 如果在执行 block 的过程中，block 被释放了怎么办？</p>
+
+<p>A：简单来说，block 还会继续执行，但是它捕获的指针会具有不确定的值，详细内容请参考<a href="https://stackoverflow.com/questions/12272783/what-happens-when-a-block-is-set-to-nil-during-its-execution">这篇文章</a></p>
+
+<p>摘自 BestSwifter</p>
 
 
 
@@ -279,14 +285,9 @@
 
        <ul class="pager">
         
-        <li class="previous">
-            <a href="/2017/04/%E6%91%98-Strong-Weak-Dance/" data-toggle="tooltip" data-placement="top" title="[摘] Strong-Weak Dance">上一篇：  <span>[摘] Strong-Weak Dance</span>
-            </a>
-        </li>
-        
         
         <li class="next">
-            <a href="/2017/04/iOS-%E9%80%9A%E7%94%A8%E9%93%BE/" data-toggle="tooltip" data-placement="top" title="iOS通用链">下一篇：  <span>iOS通用链</span>
+            <a href="/2017/04/iOS-app-%E8%BF%90%E8%A1%8C%E7%8A%B6%E6%80%81/" data-toggle="tooltip" data-placement="top" title="iOS运行状态&后台执行">下一篇：  <span>iOS运行状态&后台执行</span>
             </a>
         </li>
         

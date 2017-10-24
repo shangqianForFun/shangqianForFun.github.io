@@ -5,8 +5,8 @@
     <description>welcome</description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 17 Oct 2017 17:35:07 +0800</pubDate>
-    <lastBuildDate>Tue, 17 Oct 2017 17:35:07 +0800</lastBuildDate>
+    <pubDate>Tue, 24 Oct 2017 17:48:25 +0800</pubDate>
+    <lastBuildDate>Tue, 24 Oct 2017 17:48:25 +0800</lastBuildDate>
     <generator>Jekyll v3.6.0</generator>
     
       <item>
@@ -293,6 +293,83 @@ UIKIT_EXTERN NSString *const UIApplicationOpenURLOptionsOpenInPlaceKey NS_AVAILA
         <pubDate>Sat, 01 Apr 2017 00:00:00 +0800</pubDate>
         <link>http://localhost:4000/2017/04/iOS-app-%E8%BF%90%E8%A1%8C%E7%8A%B6%E6%80%81/</link>
         <guid isPermaLink="true">http://localhost:4000/2017/04/iOS-app-%E8%BF%90%E8%A1%8C%E7%8A%B6%E6%80%81/</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>[摘] Strong-Weak Dance</title>
+        <description>&lt;h1 id=&quot;摘-strong-weak-dance&quot;&gt;[摘] Strong-Weak Dance&lt;/h1&gt;
+
+&lt;p&gt;在使用 Block 时，除了使用 __weak 修饰符避免循环引用外，还有一点经常容易忘记。苹果把它称为：“Strong-Weak Dance”。&lt;/p&gt;
+
+&lt;h3 id=&quot;问题来源&quot;&gt;问题来源&lt;/h3&gt;
+
+&lt;p&gt;这是一种 强引用 –&amp;gt; 弱引用 –&amp;gt; 强引用 的变换过程。在弄明白为什么要如此大费周章之前，我们首先来看看一般的写法会有什么问题&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;__weak MyViewController *wself = self;
+self.completionHandler = ^(NSInteger result) {
+    [wself.property removeObserver: wself forKeyPath:@&quot;pathName&quot;];
+};
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;这种写法可以避免循环引用，但是我们要考虑这样的问题：&lt;/p&gt;
+
+&lt;p&gt;假设 block 被放在子线程中执行，而且执行过程中 self 在主线程被释放了。由于 wself 是一个弱引用，因此会自动变为 nil。而在 KVO 中，这会导致崩溃。&lt;/p&gt;
+
+&lt;h3 id=&quot;strong-weak-dance&quot;&gt;Strong-Weak Dance&lt;/h3&gt;
+
+&lt;p&gt;解决以上问题的方法很简单，新增一行代码即可：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;__weak MyViewController *wself = self;
+self.completionHandler = ^(NSInteger result) {
+    __strong __typeof(wself) sself = wself; // 强引用一次
+    [sself.property removeObserver: sself forKeyPath:@&quot;pathName&quot;];
+};
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;这样一来，self 所指向对象的引用计数变成 2，即使主线程中的 self 因为超出作用于而释放，对象的引用计数依然为 1，避免了对象的销毁&lt;/p&gt;
+
+&lt;p&gt;1  Q：下面这行代码，将一个弱引用的指针赋值给强引用的指针，可以起到强引用效果么？&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;__strong __typeof(wself) sself = wself;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;A：会的。引用计数描述的是对象而不是指针。这句话的意思是:
+sself 强引用 wself 指向的那个对象 因此对象的引用计数会增加一个&lt;/p&gt;
+
+&lt;p&gt;2  Q: block 内部定义了sself，会不会因此强引用了 sself？
+A：不会。block 只有截获外部变量时，才会引用它。如果是内部新建一个，则没有任何问题&lt;/p&gt;
+
+&lt;p&gt;3 Q: Q：如果在 block 内部没有强引用，而是通过 if 判断，是不是也可以，比如这样写：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;__weak MyViewController *wself = self;
+ wself.completionHandler = ^(NSInteger result) {
+     if (wself) { // 只有当 wself 不为 nil 时，才执行以下代码
+         [wself.property removeObserver: wself forKeyPath:@&quot;pathName&quot;];
+     }
+ };
+ 
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;A：不可以！考虑到多线程执行，也许在判断的时候，self 还没释放，但是执行 self 里面的代码时，就刚好释放了&lt;/p&gt;
+
+&lt;p&gt;4 Q: 那按照这个说法，block 内部强引用也没用啊。也许 block 执行以前，self 就释放了。&lt;/p&gt;
+
+&lt;p&gt;A：有用！如果在 block 执行以前，self 就释放了，那么 block 的引用计数降为 0，所以自己就会被释放。这样它根本就不会被执行。另外，如果执行一个为 nil 的闭包会导致崩溃。&lt;/p&gt;
+
+&lt;p&gt;5 Q: 如果在执行 block 的过程中，block 被释放了怎么办？&lt;/p&gt;
+
+&lt;p&gt;A：简单来说，block 还会继续执行，但是它捕获的指针会具有不确定的值，详细内容请参考&lt;a href=&quot;https://stackoverflow.com/questions/12272783/what-happens-when-a-block-is-set-to-nil-during-its-execution&quot;&gt;这篇文章&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;摘自 BestSwifter&lt;/p&gt;
+
+</description>
+        <pubDate>Sat, 01 Apr 2017 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2017/04/%E6%91%98-Strong-Weak-Dance/</link>
+        <guid isPermaLink="true">http://localhost:4000/2017/04/%E6%91%98-Strong-Weak-Dance/</guid>
         
         
       </item>

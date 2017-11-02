@@ -6,17 +6,17 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <title>dispatch _ barrier _ sync和dispatch _ barrier _ async 的区别</title>
-  <meta name="description" content="#dispatch _ barrier _ sync和dispatch _ barrier _ async 的区别">
+  <title>Classes and metaclasses</title>
+  <meta name="description" content="Classes and metaclasses">
   <meta name="author" content="leopardpan">
 
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="dispatch _ barrier _ sync和dispatch _ barrier _ async 的区别">
-  <meta name="twitter:description" content="#dispatch _ barrier _ sync和dispatch _ barrier _ async 的区别">
+  <meta name="twitter:title" content="Classes and metaclasses">
+  <meta name="twitter:description" content="Classes and metaclasses">
   
   <meta property="og:type" content="article">
-  <meta property="og:title" content="dispatch _ barrier _ sync和dispatch _ barrier _ async 的区别">
-  <meta property="og:description" content="#dispatch _ barrier _ sync和dispatch _ barrier _ async 的区别">
+  <meta property="og:title" content="Classes and metaclasses">
+  <meta property="og:description" content="Classes and metaclasses">
   
   <link rel="icon" type="image/png" href="/images/favicon.png" />
   <link href="/images/favicon.png" rel="shortcut icon" type="image/png">
@@ -24,7 +24,7 @@
   <link rel="stylesheet" href="/css/main.css">
   <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 
-  <link rel="canonical" href="http://localhost:4000/2017/10/iOS-dispatch_barrier/">
+  <link rel="canonical" href="http://localhost:4000/2017/11/Objective-C-Classes-and-metaclasses/">
   <link rel="alternate" type="application/rss+xml" title="阿谦" href="http://localhost:4000/feed.xml">
   
   <meta name="google-site-verification" content="1-1ZlHoRvM0T2FqPbW2S-qLgYXN6rsn52kErlMPd_gw" />
@@ -139,10 +139,10 @@
         <div class="content-wrapper__inner">
             <article class="post-container post-container--single" itemscope itemtype="http://schema.org/BlogPosting">
   <header class="post-header">
-    <h1 class="post-title">dispatch _ barrier _ sync和dispatch _ barrier _ async 的区别</h1>
+    <h1 class="post-title">Classes and metaclasses</h1>
     <div class="post-meta">
       <img src="/images/calendar.png" width="20px"/> 
-      <time datetime="2017-10-17 00:00:00 +0800" itemprop="datePublished" class="post-meta__date date">2017-10-17</time>  
+      <time datetime="2017-11-02 00:00:00 +0800" itemprop="datePublished" class="post-meta__date date">2017-11-02</time>  
          
       <span id="busuanzi_container_page_pv"> | 阅读：<span id="busuanzi_value_page_pv"></span>次</span>
     </p>
@@ -150,122 +150,53 @@
   </header>
 
   <section class="post">
-    <p>#dispatch _ barrier _ sync和dispatch _ barrier _ async 的区别</p>
+    <h1 id="classes-and-metaclasses">Classes and metaclasses</h1>
 
-<p>前几天在看SDWebImage源码的时候看到了这两个API</p>
+<p>Objective-C is a class-based object system. Each object is an instance of some class; the object’s isa pointer points to its class. That class describes the object’s data: allocation size and ivar types and layout. The class also describes the object’s behavior: the selectors it responds to and instance methods it implements.</p>
 
-<div class="language-objc highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
-<span class="n">dispatch_barrier_sync</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">barrierQueue</span><span class="p">,</span> <span class="o">^</span><span class="p">{</span>
-        <span class="n">BOOL</span> <span class="n">first</span> <span class="o">=</span> <span class="nb">NO</span><span class="p">;</span>
-        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">self</span><span class="p">.</span><span class="n">URLCallbacks</span><span class="p">[</span><span class="nf">url</span><span class="p">])</span> <span class="p">{</span>
-            <span class="n">self</span><span class="p">.</span><span class="n">URLCallbacks</span><span class="p">[</span><span class="nf">url</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSMutableArray</span> <span class="nf">new</span><span class="p">];</span>
-            <span class="n">first</span> <span class="o">=</span> <span class="nb">YES</span><span class="p">;</span>
-        <span class="p">}</span>
-        <span class="c1">// Handle single download of simultaneous download request for the same URL
-</span>        <span class="n">NSMutableArray</span> <span class="o">*</span><span class="n">callbacksForURL</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">URLCallbacks</span><span class="p">[</span><span class="nf">url</span><span class="p">];</span>
-        <span class="n">NSMutableDictionary</span> <span class="o">*</span><span class="n">callbacks</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSMutableDictionary</span> <span class="nf">new</span><span class="p">];</span>
-        <span class="k">if</span> <span class="p">(</span><span class="n">progressBlock</span><span class="p">)</span> <span class="n">callbacks</span><span class="p">[</span><span class="nf">kProgressCallbackKey</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">progressBlock</span> <span class="nf">copy</span><span class="p">];</span>
-        <span class="k">if</span> <span class="p">(</span><span class="n">completedBlock</span><span class="p">)</span> <span class="n">callbacks</span><span class="p">[</span><span class="nf">kCompletedCallbackKey</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">completedBlock</span> <span class="nf">copy</span><span class="p">];</span>
-        <span class="p">[</span><span class="n">callbacksForURL</span> <span class="nf">addObject</span><span class="p">:</span><span class="n">callbacks</span><span class="p">];</span>
-        <span class="n">self</span><span class="p">.</span><span class="n">URLCallbacks</span><span class="p">[</span><span class="nf">url</span><span class="p">]</span> <span class="o">=</span> <span class="n">callbacksForURL</span><span class="p">;</span>
-        <span class="k">if</span> <span class="p">(</span><span class="n">first</span><span class="p">)</span> <span class="p">{</span>
-            <span class="n">createCallback</span><span class="p">();</span>
-        <span class="p">}</span>
-    <span class="p">});</span> 
-    
+<p>The class’s method list is the set of instance methods, the selectors that the object responds to. When you send a message to an instance, objc_msgSend() looks through the method list of that object’s class (and superclasses, if any) to decide what method to call.</p>
+
+<p>Each Objective-C class is also an object. It has an isa pointer and other data, and can respond to selectors. When you call a “class method” like [NSObject alloc], you are actually sending a message to that class object.</p>
+
+<p>Since a class is an object, it must be an instance of some other class: a metaclass. The metaclass is the description of the class object, just like the class is the description of ordinary instances. In particular, the metaclass’s method list is the class methods: the selectors that the class object responds to. When you send a message to a class - an instance of a metaclass - objc_msgSend() looks through the method list of the metaclass (and its superclasses, if any) to decide what method to call. Class methods are described by the metaclass on behalf of the class object, just like instance methods are described by the class on behalf of the instance objects.</p>
+
+<p>What about the metaclass? Is it metaclasses all the way down? No. A metaclass is an instance of the root class’s metaclass; the root metaclass is itself an instance of the root metaclass. The isa chain ends in a cycle here: instance to class to metaclass to root metaclass to itself. The behavior of metaclass isa pointers rarely matters, since in the real world nobody sends messages to metaclass objects.</p>
+
+<p>More important is the superclass of a metaclass. The metaclass’s superclass chain parallels the class’s superclass chain, so class methods are inherited in parallel with instance methods. And the root metaclass’s superclass is the root class, so each class object responds to the root class’s instance methods. In the end, a class object is an instance of (a subclass of) the root class, just like any other object.</p>
+
+<p>Confused? The diagram may help. Remember, when a message is sent to any object, the method lookup starts with that object’s isa pointer, then continues up the superclass chain. “Instance methods” are defined by the class, and “class methods” are defined by the metaclass plus the root (non-meta) class.</p>
+
+<p>In proper computer science language theory, a class and metaclass hierarchy can be more free-form, with deeper metaclass chains and multiple classes instantiated from any single metaclass. Objective-C uses metaclasses for practical goals like class methods, but otherwise tends to hide metaclasses. For example, [NSObject class] is identical to [NSObject self], even though in formal terms it ought to return the metaclass that NSObject-&gt;isa points to. The Objective-C language is a set of practical compromises; here it limits the class schema before it gets too, well, meta.</p>
+
+<p>翻译:
+Objective-C 是基于类的对象系统。每一个对象都是一些类的实例；这个对象的 isa 指针指向它所属的类。该类描述这个对象的数据信息：内存分配大小和实例变量的类型与布局。这个类也描述了对象的行为：它能够响应的选择器和它实现的实例方法。</p>
+
+<p>类的方法列表是一个实例方法的集合，是对象响应的选择器。当你向一个实例发送一条消息，objc_msgSend()查询对象所属类（和它的父类，如果有）的方法列表，去决定调用哪个方法。</p>
+
+<p>每个 Objective-C 类也是一个对象。它有一个 isa 指针和其他数据，并且可以响应选择器。当你调用一个“类方法”，例如：[NSObject alloc]，你实际上是向类对象发送了一条消息。</p>
+
+<p>因为一个类是一个对象，它肯定也是其他类的实例，这个类是元类(metaclass)。元类是关于类对象的描述，就像类是普通实例对象的描述一样。实际上，元类的方法列表正是类方法：该类对象响应的选择器。当你向一个类（元类的实例）发送消息，objc_msgSend()查询元类（和它的父类，如果有）的方法列表，去决定调用哪个方法。元类为类对象描述类方法，就像类为实例对象描述实例方法一样。</p>
+
+<p>元类？元类链是一直向下的吗？不是，一个元类是根元类的实例；根元类是它自身的实例。isa 指针链以一个环结束：实例指向类指向根元类指向根元类自身。元类的 isa 指针并不重要，因为在现实世界中，没人会向元类对象发送消息。</p>
+
+<p>元类的父类就要更重要了。元类的父类链平行于类的父类链，因此类方法跟实例方法一样被继承。并且根元类的父类是根类，因此每个类对象都响应根类的实例方法。最后，一个类对象就像其他对象一样是根类的实例（或子类）。</p>
+
+<p>晕了吧？这个图肯定会帮助你。记住，当一个消息被发送到任何对象，都会从对象的 isa 指针开始寻找应该调用的方法，然后继续沿着父类链向上寻找。“实例方法”被类定义，“类方法”被元类和根类（非元类）定义。</p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/671285-14497a391b617e99.jpg" alt="" /></p>
+
+<p>觉得翻译的很好,就不自己翻译了…</p>
+
+<h3 id="qa-以下代码输出什么">Q&amp;A 以下代码输出什么?</h3>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>NSLog(@"%@", NSStringFromClass([self class]));
+NSLog(@"%@", NSStringFromClass([super class]));
 </code></pre></div></div>
 
-<p>翻译过来大家一般都叫做栅栏函数,在一个线程队列里如果希望先完成某些任务之后,再执行之后的任务,就可以使用这个函数来操作,这是barrier的意思,但是为什么还有一个sync 和 async呢?
- 举个例子</p>
+<p>答案：不论输出什么输出相同</p>
 
-<div class="language-objc highlighter-rouge"><div class="highlight"><pre class="highlight"><code> 
- <span class="n">dispatch_queue_t</span> <span class="n">queue</span> <span class="o">=</span> <span class="n">dispatch_queue_create</span><span class="p">(</span><span class="s">"test.queue"</span><span class="p">,</span> <span class="n">DISPATCH_QUEUE_CONCURRENT</span><span class="p">);</span>
-    <span class="n">dispatch_async</span><span class="p">(</span><span class="n">queue</span><span class="p">,</span> <span class="o">^</span><span class="p">{</span>
-        <span class="n">NSLog</span><span class="p">(</span><span class="s">@"1111"</span><span class="p">);</span>
-    <span class="p">});</span>
-    <span class="n">dispatch_async</span><span class="p">(</span><span class="n">queue</span><span class="p">,</span> <span class="o">^</span><span class="p">{</span>
-        <span class="n">NSLog</span><span class="p">(</span><span class="s">@"2222"</span><span class="p">);</span>
-    <span class="p">});</span>
-    <span class="n">dispatch_async</span><span class="p">(</span><span class="n">queue</span><span class="p">,</span> <span class="o">^</span><span class="p">{</span>
-        <span class="n">NSLog</span><span class="p">(</span><span class="s">@"3333"</span><span class="p">);</span>
-    <span class="p">});</span>
-    <span class="n">dispatch_barrier_async</span><span class="p">(</span><span class="n">queue</span><span class="p">,</span> <span class="o">^</span><span class="p">{</span>
+<p>解释：objc中super是编译器标示符，并不像self一样是一个对象，遇到向super发的方法时会转译成objc_msgSendSuper(id self,SEL _cmd,…)，而参数中的对象还是self，于是从父类开始沿继承链寻找- class这个方法，最后在NSObject中找到（若无override），此时，[self class]和[super class]已经等价了  (答案来自我就叫sunny怎么了)</p>
 
-        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span><span class="mi">5000000</span><span class="p">;</span> <span class="n">i</span> <span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-            <span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="o">==</span> <span class="mi">1000000</span><span class="p">)</span> <span class="p">{</span>
-                <span class="n">NSLog</span><span class="p">(</span><span class="s">@"1000000"</span><span class="p">);</span>
-            <span class="p">}</span>
-            <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="o">==</span> <span class="mi">2000000</span><span class="p">)</span> <span class="p">{</span>
-                <span class="n">NSLog</span><span class="p">(</span><span class="s">@"2000000"</span><span class="p">);</span>
-            <span class="p">}</span>
-            <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="o">==</span> <span class="mi">3000000</span><span class="p">)</span> <span class="p">{</span>
-                <span class="n">NSLog</span><span class="p">(</span><span class="s">@"3000000"</span><span class="p">);</span> 
-            <span class="p">}</span>
-        <span class="p">}</span>
-    <span class="p">});</span>
-    <span class="n">NSLog</span><span class="p">(</span><span class="s">@"after barrier"</span><span class="p">);</span>
-    <span class="n">NSLog</span><span class="p">(</span><span class="s">@"888888888"</span><span class="p">);</span>
-    <span class="n">NSLog</span><span class="p">(</span><span class="s">@"99999999"</span><span class="p">);</span>
-    <span class="n">dispatch_async</span><span class="p">(</span><span class="n">queue</span><span class="p">,</span> <span class="o">^</span><span class="p">{</span>
-        <span class="n">NSLog</span><span class="p">(</span><span class="s">@"4444"</span><span class="p">);</span>
-    <span class="p">});</span>
-    <span class="n">dispatch_async</span><span class="p">(</span><span class="n">queue</span><span class="p">,</span> <span class="o">^</span><span class="p">{</span>
-        <span class="n">NSLog</span><span class="p">(</span><span class="s">@"5555"</span><span class="p">);</span>
-    <span class="p">});</span>
-    <span class="n">dispatch_async</span><span class="p">(</span><span class="n">queue</span><span class="p">,</span> <span class="o">^</span><span class="p">{</span>
-        <span class="n">NSLog</span><span class="p">(</span><span class="s">@"6666"</span><span class="p">);</span>
-    <span class="p">});</span>
-    
-</code></pre></div></div>
-<p>[4042:758675] 888888888</p>
-
-<p>[4042:758953] 2222</p>
-
-<p>[4042:758951] 3333</p>
-
-<p>[4042:758952] 1111</p>
-
-<p>[4042:758675] 99999999</p>
-
-<p>[4042:758952] 1000000</p>
-
-<p>[4042:758952] 2000000</p>
-
-<p>[4042:758952] 3000000</p>
-
-<p>[4042:758952] 4444</p>
-
-<p>[4042:758951] 5555</p>
-
-<p>[4042:758960] 6666</p>
-
-<p><strong>**</strong><strong>**</strong><strong>**<em>修改为sync之后的打印</em></strong><strong>**</strong><strong>**</strong>**</p>
-
-<p>[4084:768014] 2222</p>
-
-<p>[4084:768015] 1111</p>
-
-<p>[4084:768020] 3333</p>
-
-<p>[4084:767596] 1000000</p>
-
-<p>[4084:767596] 2000000</p>
-
-<p>[4084:767596] 3000000</p>
-
-<p>[4084:767596] 888888888</p>
-
-<p>[4084:767596] 99999999</p>
-
-<p>[4084:768015] 4444</p>
-
-<p>[4084:768021] 5555</p>
-
-<p>[4084:768020] 6666</p>
-
-<p>两个函数都能够保证 在queue中任务的执行barrier前面的先执行完成,然后再执行barrier里面和后面的任务,区别在于,888888 和 999999这两个的执行时机,在使用sync的时候 888888和999999的执行永远是在barrier中的任务执行完成之后再执行因为sync就是为了阻塞当前队列(当前为主队列). 而async则不会阻塞当前队列,所以在第一次的打印中888888和99999的执行和barrier就无关了,任何时候都可能打印.</p>
-
-<p>再回到SD的源码中,使用sync的原因是因为为了在当前线程中(异步)线程中同步的去执行当前的代码.</p>
 
 
   </section>
@@ -335,15 +266,10 @@
        <ul class="pager">
         
         <li class="previous">
-            <a href="/2017/04/iOS-%E9%80%9A%E7%94%A8%E9%93%BE/" data-toggle="tooltip" data-placement="top" title="iOS通用链">上一篇：  <span>iOS通用链</span>
+            <a href="/2017/10/iOS-dispatch_barrier/" data-toggle="tooltip" data-placement="top" title="dispatch _ barrier _ sync和dispatch _ barrier _ async 的区别">上一篇：  <span>dispatch _ barrier _ sync和dispatch _ barrier _ async 的区别</span>
             </a>
         </li>
         
-        
-        <li class="next">
-            <a href="/2017/11/Objective-C-Classes-and-metaclasses/" data-toggle="tooltip" data-placement="top" title="Classes and metaclasses">下一篇：  <span>Classes and metaclasses</span>
-            </a>
-        </li>
         
     </ul>
 </section>
